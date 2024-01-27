@@ -1,7 +1,7 @@
 import pyshark
 import math
 import collections
-from bytewax import Dataflow, parse, spawn_cluster, AdvanceTo, Emit
+from bytewax.dataflow import Dataflow, parse, spawn_cluster, AdvanceTo, Emit
 from securitycheck import Packets
 
 def input_builder(worker_index, worker_count):
