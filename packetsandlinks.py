@@ -47,7 +47,7 @@ def protocol(file_path, max_rows = 5):
 
 
 
-file_path = 'Project-NetProbeX\links.pcapng'
+file_path = 'links.pcapng'
 
 analyze_packets(file_path)
 print("\n")
