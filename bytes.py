@@ -17,13 +17,10 @@ def byte(instance):
     packet_lengths = []
 
     # Iterate over the first 10 packets in the capture
-    for idx, packet in enumerate(capture):
+    for packet in capture:
         # Access the length attribute of the packet and append to the list
         packet_lengths.append(int(packet.length))
         
-        # Check if we have processed 10 packets
-        if idx == 9:
-            break
 
     # Close the capture file
     capture.close()

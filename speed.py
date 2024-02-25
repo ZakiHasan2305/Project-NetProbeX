@@ -1,3 +1,7 @@
+from PySide6.QtWidgets import QApplication, QLabel, QVBoxLayout, QGraphicsWidget
+from PySide6.QtCore import QTimer, Qt
+import pyqtgraph as pg
+
 
 import speedtest
 import inspect
@@ -38,5 +42,4 @@ for key, value in closest_server[0].items():
 #servers = s.get_servers()
 #for key, value in servers.items():
  #   print(key, ' : ',value)
-
 
