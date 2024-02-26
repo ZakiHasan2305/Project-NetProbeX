@@ -67,8 +67,7 @@ class BackgroundApp(App):
 def main():
 
     BackgroundApp().run()
-    app = QApplication(sys.argv)
-    sys.exit(app.exec())
+    
    
 
 if __name__ == "__main__":
