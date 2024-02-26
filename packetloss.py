@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
         previous_packet_number = 0
         packet_loss_data = []
 
-        # Iterate through packets
+        # Iterate through the packets
         for packet in cap:
             packet_number = int(packet.number)
             if packet_number != previous_packet_number + 1:
