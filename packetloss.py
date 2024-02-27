@@ -3,6 +3,7 @@ from PyQt5.QtCore import QSize, Qt
 from PyQt5.QtWidgets import QApplication, QPushButton, QMainWindow
 import pyshark
 import matplotlib.pyplot as plt
+from constants import wireshark_file_path
 
 class MainWindow(QMainWindow): 
     def __init__(self):
@@ -21,14 +22,13 @@ class MainWindow(QMainWindow):
     # function to analyze packets
     def analyze_packets(self):
         # Load Wireshark capture file
-        file_path = "transferSpeed.pcapng"
-        cap = pyshark.FileCapture(file_path)
+        cap = pyshark.FileCapture(wireshark_file_path)
 
         # Initialize variables to track packet loss
         previous_packet_number = 0
         packet_loss_data = []
 
-        # Iterate through packets
+        # Iterate through the packets
         for packet in cap:
             packet_number = int(packet.number)
             if packet_number != previous_packet_number + 1:
