@@ -5,10 +5,11 @@ from random import randint
 import speedtest
 import pyshark
 import sys
+from constants import wireshark_file_path
 
 def byte(instance):
     # Path to your pcap/pcapng file
-    pcap_file = "Project-NetProbeX\links.pcapng"
+    pcap_file = wireshark_file_path
 
     # Open the capture file
     capture = pyshark.FileCapture(pcap_file)
