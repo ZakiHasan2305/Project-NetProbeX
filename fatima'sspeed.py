@@ -3,6 +3,7 @@ from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
 from scapy.all import rdpcap
 import matplotlib.pyplot as plt
+from constants import wireshark_file_path
 
 class MainWindow(QMainWindow): 
     def __init__(self):
@@ -16,8 +17,7 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(button)
     
     def analyze_packets(self):
-        file_path = "transferSpeed.pcapng"
-        packets = rdpcap(file_path)
+        packets = rdpcap(wireshark_file_path)
 
         times = []
         transfer_speeds = []
