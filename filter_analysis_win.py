@@ -1,6 +1,6 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QListWidget, QProgressBar, QLabel, QListWidgetItem
-from PyQt5.QtGui import QPainter, QBrush, QColor
+from PyQt5.QtGui import QPainter, QBrush, QPixmap
 from PyQt5.QtCore import Qt
 from constants import wireshark_file_path
 from securitycheck import get_packets_and_entropy
@@ -17,6 +17,15 @@ class FilterAnalysisWindow(QWidget):
     def initUI(self):
         # Create main layout
         main_layout = QHBoxLayout(self)
+
+        # Load the JPG image
+        background_image = "background.jpg"
+        self.pixmap = QPixmap(background_image)
+
+        # Create a QLabel to display the background image
+        self.label = QLabel(self)
+        self.label.setPixmap(self.pixmap)
+        self.label.setGeometry(0, 0, self.width(), self.height())
 
         # Create list widget for displaying packets with low entropy
         self.packet_list_label = QLabel("Low Entropy Packets", self)
@@ -112,6 +121,15 @@ class FilterAnalysisWindow(QWidget):
         if selected_index < len(self.entropy_levels):
             entropy_level = self.entropy_levels[selected_index]
             self.updateProgressBar(entropy_level)
+    
+    def resizeEvent(self, event):
+        # Update the background size when the window is resized
+        self.update_background_size()
+
+    def update_background_size(self):
+        # Resize the background image to match the window size
+        self.pixmap = self.pixmap.scaled(self.size())
+        self.label.setGeometry(0, 0, self.width(), self.height())
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
