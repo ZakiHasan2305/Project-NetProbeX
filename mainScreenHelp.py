@@ -16,8 +16,14 @@ class MainWindow(QMainWindow):
         self.container.setGeometry(0, 0, 1280, 720)
         self.container.setFocusPolicy(Qt.StrongFocus)
 
+        
+
         self.view.setResizeMode(QQuickView.SizeRootObjectToView)
-        self.view.setSource(QUrl.fromLocalFile("screen01.qml"))
+        qml_file = "home.qml"
+        if not QUrl.fromLocalFile(qml_file).isValid():
+            print("Error: QML file not found or invalid.")
+            sys.exit(1)
+        self.view.setSource(QUrl.fromLocalFile(qml_file))
 
         self.setCentralWidget(self.container)
 
