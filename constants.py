@@ -1,1 +1,1 @@
-wireshark_file_path = "Project-NetProbeX\links.pcapng"
+wireshark_file_path = "links.pcapng"
