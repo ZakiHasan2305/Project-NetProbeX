@@ -51,7 +51,7 @@ class Home(App):
     
     def open_visualaid(self, instance):
        try:
-            subprocess.Popen(['python', 'visualaid.py'])  # Launch visualaid.py script
+            subprocess.Popen(['python', 'Project-NetProbeX/visualaid.py'])  # Launch visualaid.py script
        except Exception as e:
             print(f"Error occurred while launching visualaid.py: {e}")
 
