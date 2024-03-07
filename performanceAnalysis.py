@@ -99,3 +99,4 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     window = FilterAnalysisWindow()
     sys.exit(app.exec_())
+
