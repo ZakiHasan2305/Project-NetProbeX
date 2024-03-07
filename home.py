@@ -17,17 +17,17 @@ from random import randint
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QListWidget, QProgressBar, QLabel, QListWidgetItem
 from PyQt5.QtGui import QPainter, QBrush, QColor
 from PyQt5.QtCore import Qt
-from securitycheck import get_packets_and_entropy
 from scapy.all import *
-from scapy.layers.inet import IP  # Add this line to import the IP class
 import math
+
+
 
 class Home(App):
     def build(self):
         root = FloatLayout()  # Switch this to whatever png we need
         
         # Background Image
-        bg_image = Image(source='Project-NetProbeX/background.png', allow_stretch=True, keep_ratio=False)
+        bg_image = Image(source='background.png', allow_stretch=True, keep_ratio=False)
         root.add_widget(bg_image)
 
         # Sidebar
@@ -62,13 +62,13 @@ class Home(App):
     
     def open_visualaid(self, instance):
        try:
-            subprocess.Popen(['python', 'Project-NetProbeX/visualaid.py'])  # Launch visualaid.py script
+            subprocess.Popen(['python', 'visualaid.py'])  # Launch visualaid.py script
        except Exception as e:
             print(f"Error occurred while launching visualaid.py: {e}")
     
     def filter_analysis_win(self, instance):
         try:
-            subprocess.Popen(['python','Project-NetProbeX/filter_analysis_win.py'])
+            subprocess.Popen(['python','filter_analysis_win.py'])
         except Exception as e:
             print(f"Error occured while launching filter_analysis_win.py: {e}")
 
