@@ -19,6 +19,7 @@ from PyQt5.QtGui import QPainter, QBrush, QColor
 from PyQt5.QtCore import Qt
 from scapy.all import *
 import math
+from kivy.clock import Clock
 
 
 
@@ -27,22 +28,18 @@ class Home(App):
         root = FloatLayout()
 
         # Background Image
-        bg_image = Image(source='background.png', allow_stretch=True, keep_ratio=False)
+        bg_image = Image(source='image.png', allow_stretch=True, keep_ratio=False, size=(400,400))
         root.add_widget(bg_image)
 
-        # Title
-        title_label = Label(text='Project NetProbe X', italic=True, font_size='50sp', size_hint=(None, None),
-                            size=(root.width, 100), pos_hint={'center_x': 0.5, 'bottom': 1})
-        root.add_widget(title_label)
+        
 
         # Sidebar
-        sidebar_width = 200
-        sidebar = BoxLayout(orientation='vertical', size_hint=(None, 1), width=sidebar_width, spacing=5)
-        sidebar_button = Button(text='≡', size_hint=(None, None), size=(100, 100), pos=(0, root.height - 100))
+    
+        sidebar_button = Button(text='≡', size_hint=(None, None), size=(100, 100), pos_hint = {'left' : 1, 'top': 0.998})
         sidebar_button.bind(on_release=self.show_sidebar)
-        sidebar.add_widget(sidebar_button)
+        
 
-        root.add_widget(sidebar)
+        root.add_widget(sidebar_button)
         return root
 
     def show_sidebar(self, instance):
