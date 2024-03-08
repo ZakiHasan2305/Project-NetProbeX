@@ -44,7 +44,7 @@ class BackgroundApp(App):
 
     def build(self):
         root = FloatLayout()  # Switch this to whatever png we need
-        bg_image = Image(source='redandblack.jpg', allow_stretch=True, keep_ratio=False)
+        bg_image = Image(source='background.jpg', allow_stretch=True, keep_ratio=False)
         close_button = Button(text='Close', size_hint=(0.2, 0.1), pos_hint={'right': 1, 'top': 1})
         close_button.bind(on_press=confirm_close)
         byte_button = Button(text='Byte',size_hint= (0.2,0.1), pos_hint = {'left' : 1, 'top': 1})
