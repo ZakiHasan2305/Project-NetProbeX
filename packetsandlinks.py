@@ -1,19 +1,23 @@
 import pyshark
+from constants import wireshark_file_path
 
+def count_packets(file_path):
+    cap = pyshark.FileCapture(file_path)
 
-def analyze_packets(file_path):
+    total_packets = 0
+
+    for _ in cap:
+        total_packets += 1
+
+    return total_packets
+
+def find_visited_links(file_path):
     cap = pyshark.FileCapture(file_path)
 
     visited_links = set()
-    total_packets = 0
 
     for packet in cap:
-        total_packets += 1
-
         if "IP" in packet:
-            src_ip = packet.ip.src
-            dst_ip = packet.ip.dst
-
             if hasattr(packet, "dns") and packet.dns.qry_name:
                 # DNS packet with a query name
                 dns_query = packet.dns.qry_name.lower()
@@ -24,13 +28,19 @@ def analyze_packets(file_path):
                 http_host = packet.http.host.lower()
                 visited_links.add(http_host)
 
+    return visited_links
+
+def analyze_packets(file_path):
+    visited_links = find_visited_links(file_path)
+    total_packets = count_packets(file_path)
+
     print("Visited Links: ")
     for link in visited_links:
         print(link)
 
     print(f"\nTotal Packets: {total_packets}")
 
-def protocol(file_path, max_rows = 5):
+def protocol(file_path, max_rows=5):
     try:
         with pyshark.FileCapture(file_path) as cap:
             for row_num, pkt in enumerate(cap):
@@ -45,10 +55,8 @@ def protocol(file_path, max_rows = 5):
     except pyshark.FileCaptureException as e:
         print(f"Error opening file: {e}")
 
-
-
-file_path = 'links.pcapng'
+file_path = wireshark_file_path
 
 analyze_packets(file_path)
 print("\n")
-protocol(file_path,max_rows=5)
+protocol(file_path, max_rows=5)

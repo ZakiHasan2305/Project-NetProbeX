@@ -1,71 +1,71 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QLabel
-from PyQt5.QtCore import Qt
+from kivy.uix.label import Label
+from kivy.app import App
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.image import Image
+from kivy.uix.boxlayout import BoxLayout
+from wiresharkpractise import get_local_ip_address
+from constants import wireshark_file_path
+
 
 WINDOW_SIZE = 500
 LABEL_HEIGHT = 40
 
-class SysInfoWindow(QMainWindow):
-    """System Information Window."""
+class SysInfoWindow(App):
+    def build(self):
+        root = FloatLayout()
 
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("System Information")
-        self.setFixedSize(WINDOW_SIZE, WINDOW_SIZE)
-        self.generalLayout = QVBoxLayout()
-        centralWidget = QWidget(self)
-        centralWidget.setLayout(self.generalLayout)
-        self.setCentralWidget(centralWidget)
-        self._createInfoDisplay()
+        # Adding background image
+        bg_image = Image(source='background.png', allow_stretch=True, keep_ratio=False, size=(WINDOW_SIZE, WINDOW_SIZE))
+        root.add_widget(bg_image)
 
-    def _createInfoDisplay(self):
-        self.display = QWidget()
-        self.display.setFixedSize(WINDOW_SIZE, WINDOW_SIZE)
-        self.display.setStyleSheet("background-color: black;")
-        self.generalLayout.addWidget(self.display)
-
-        infoLayout = QVBoxLayout(self.display)
+        # Create layout for information display
+        infoLayout = BoxLayout(orientation='vertical', size_hint=(None, None), width=WINDOW_SIZE, height=WINDOW_SIZE)
+        infoLayout.pos_hint = {'top': 1.0}  # Position the layout at the top of the screen
+        infoLayout.padding = [20, 20]  # Add padding to the layout
 
         # Define labels for displaying the info
         self.infoLabels = {
-            "Computer name": QLabel("Computer name: ..."),
-            "IP Address": QLabel("IP Address: ..."),
-            "Protocol": QLabel("Protocol: ..."),
-            "Websites Visited": QLabel("Websites Visited: ..."),
-            "SFTP": QLabel("SFTP: ..."),
+            "Computer name": Label(text="Computer name: ...", color=(1, 1, 1, 1)),
+            "IP Address": Label(text="IP Address: ...", color=(1, 1, 1, 1)),
+            "Protocol": Label(text="Protocol: ...", color=(1, 1, 1, 1)),
+            "Websites Visited": Label(text="Websites Visited: ...", color=(1, 1, 1, 1)),
+            "SFTP": Label(text="SFTP: ...", color=(1, 1, 1, 1)),
         }
 
         # Update label style and add to layout
         for label in self.infoLabels.values():
-            label.setStyleSheet("QLabel { color : white; }")
-            label.setFixedHeight(LABEL_HEIGHT)
-            infoLayout.addWidget(label)
+            label.size_hint_y = None
+            label.height = LABEL_HEIGHT
+            infoLayout.add_widget(label)
+
+        # Add infoLayout to the root
+        root.add_widget(infoLayout)
 
         # This is where you would connect to the backend to update the labels
         self.updateInfo()
 
+        return root
+
+
     def updateInfo(self):
         """Update the information labels with data from the backend."""
-        self.infoLabels["Computer name"].setText(f"Computer name: {self.getComputerName()}")
-        self.infoLabels["IP Address"].setText(f"IP Address: {self.getIPAddress()}")
+        self.infoLabels["Computer name"].text = f"Computer name: {self.getComputerName()}"
+        self.infoLabels["IP Address"].text = f"IP Address: {self.getIPAddress()}"
+        self.infoLabels["Websites Visited"].text = f"Websites Visited: {self.websites()}"
         # ... update other labels similarly ...
 
     def getComputerName(self):
-        # Placeholder for actual backend function to get the computer name
-        return "Placeholder-ComputerName"
+        
+        return "comp_name"
 
     def getIPAddress(self):
-        # Placeholder for actual backend function to get the IP Address
-        return "Placeholder-IPAddress"
-
-    # ... define other backend function placeholders ...
-
-def main():
-    """Main function."""
-    app = QApplication([])
-    sysInfoWindow = SysInfoWindow()
-    sysInfoWindow.show()
-    sys.exit(app.exec())
+       ip = get_local_ip_address()
+       return ip 
+       
+    
+    def websites(self):
+        return "website"
 
 if __name__ == "__main__":
-    main()
+    SysInfoWindow().run()
