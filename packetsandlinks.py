@@ -1,22 +1,50 @@
 import pyshark
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
+from kivy.uix.button import Button
+from kivy.uix.popup import Popup
 from constants import wireshark_file_path
 
+height = 500
+width = 500
 class PacketAnalysisApp(App):
     def build(self):
         root = BoxLayout(orientation='vertical')
 
-        # Adding background image
-        bg_image = Image(source='background.png', allow_stretch=True, keep_ratio=False, size_hint=(1, 1))
-        root.add_widget(bg_image)
-
         # Display packet analysis results
         self.display_results(root)
 
+        # Adding close button
+        close_button = Button(text='Close', size_hint=(0.2, 0.1), pos_hint={'right': 1, 'top': 1})
+        close_button.bind(on_press=self.confirm_close)
+        root.add_widget(close_button)
+
         return root
+    
+    def confirm_close(self, instance):
+        content = BoxLayout(orientation='vertical')
+        content.add_widget(Label(text='Are you sure you want to close the application?'))
+
+        # Create "Yes" button to close the app
+        yes_button = Button(text='Yes', size_hint=(1, None), height=40)
+        yes_button.bind(on_press=self.close_app)
+        content.add_widget(yes_button)
+
+        # Create "No" button to cancel
+        no_button = Button(text='No', size_hint=(1, None), height=40)
+        content.add_widget(no_button)
+
+        # Create Popup
+        popup = Popup(title='Confirmation', content=content, size_hint=(None, None), size=(300, 200))
+        popup.open()
+
+        # Bind "No" button to dismiss the popup
+        no_button.bind(on_press=popup.dismiss)
+
+    def close_app(self, instance):
+        App.get_running_app().stop()
 
     def display_results(self, layout):
         # Display total unique links

@@ -31,6 +31,12 @@ class Home(App):
         bg_image = Image(source='image.png', allow_stretch=True, keep_ratio=False, size=(400,400))
         root.add_widget(bg_image)
 
+        # Adding close button
+        close_button = Button(text='Close', size_hint=(0.2, 0.1), pos_hint={'right': 1, 'top': 1})
+        close_button.bind(on_press=self.confirm_close)
+        root.add_widget(close_button)
+
+
         
 
         # Sidebar
@@ -41,6 +47,28 @@ class Home(App):
 
         root.add_widget(sidebar_button)
         return root
+    def confirm_close(self, instance):
+        content = BoxLayout(orientation='vertical')
+        content.add_widget(Label(text='Are you sure you want to close the application?'))
+
+        # Create "Yes" button to close the app
+        yes_button = Button(text='Yes', size_hint=(1, None), height=40)
+        yes_button.bind(on_press=self.close_app)
+        content.add_widget(yes_button)
+
+        # Create "No" button to cancel
+        no_button = Button(text='No', size_hint=(1, None), height=40)
+        content.add_widget(no_button)
+
+        # Create Popup
+        popup = Popup(title='Confirmation', content=content, size_hint=(None, None), size=(300, 200))
+        popup.open()
+
+        # Bind "No" button to dismiss the popup
+        no_button.bind(on_press=popup.dismiss)
+
+    def close_app(self, instance):
+        App.get_running_app().stop()
 
     def show_sidebar(self, instance):
         # Popup for Sidebar
@@ -53,6 +81,7 @@ class Home(App):
 
         task2_label.bind(on_press=self.open_visualaid)  # Binding the function to Task 2
         task5_label.bind(on_press=self.filter_analysis_win)
+        task1_label.bind(on_press=self.personal_infortation)
 
         content.add_widget(task1_label)
         content.add_widget(task2_label)
@@ -74,6 +103,12 @@ class Home(App):
             subprocess.Popen(['python', 'filter_analysis_win.py'])
         except Exception as e:
             print(f"Error occurred while launching filter_analysis_win.py: {e}")
+
+    def personal_infortation(self,instance):
+        try:
+            subprocess.Popen(['python','packetsandlinks.py'])
+        except Exception as e:
+            print(f"Error occured while launcing packetsandlinks.py: {e}")
 
 
 if __name__ == "__main__":
