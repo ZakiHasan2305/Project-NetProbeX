@@ -1,6 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QListWidget, QProgressBar, QLabel, QListWidgetItem
-from PyQt5.QtGui import QPainter, QBrush, QPixmap
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QListWidget, QProgressBar, QLabel, QListWidgetItem, QSpacerItem, QSizePolicy, QFrame, QPushButton
+from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
 from constants import wireshark_file_path
 from securitycheck import get_packets_and_entropy
@@ -16,10 +16,10 @@ class FilterAnalysisWindow(QWidget):
 
     def initUI(self):
         # Create main layout
-        main_layout = QHBoxLayout(self)
+        main_layout = QVBoxLayout(self)
 
         # Load the JPG image
-        background_image = "background.jpg"
+        background_image = "background-overlay.jpg"
         self.pixmap = QPixmap(background_image)
 
         # Create a QLabel to display the background image
@@ -27,38 +27,50 @@ class FilterAnalysisWindow(QWidget):
         self.label.setPixmap(self.pixmap)
         self.label.setGeometry(0, 0, self.width(), self.height())
 
+        # Create close button
+        self.close_button = QPushButton("Close", self)
+        self.close_button.setStyleSheet("background-color: #605c5c; color: white; border: none;")
+        self.close_button.setFixedSize(100, 50)  # Set the size of the button to be 80x40 pixels
+        self.close_button.clicked.connect(self.close)
+        main_layout.addWidget(self.close_button, alignment=Qt.AlignTop | Qt.AlignRight)
+
         # Create list widget for displaying packets with low entropy
         self.packet_list_label = QLabel("Low Entropy Packets", self)
+        self.packet_list_label.setStyleSheet("font-size: 24px; color: white; font-weight: bold;")
         main_layout.addWidget(self.packet_list_label)
 
         # Create list widget for displaying packets with low entropy
         self.packet_list_widget = QListWidget(self)
-        main_layout.addWidget(self.packet_list_widget, 1)  # Takes up half of the window
+        self.packet_list_widget.setStyleSheet("font-size: 14px; color: black; background-color: white; border: 1px solid black;")
+        main_layout.addWidget(self.packet_list_widget, 1)  # Takes up the available space
 
         # Create right side layout
         right_layout = QVBoxLayout()
 
         # Create progress bar for showing entropy levels
         self.progress_label = QLabel("Entropy Level:", self)
+        self.progress_label.setStyleSheet("font-size: 16px; color: white;")
         right_layout.addWidget(self.progress_label)
 
         self.progress_bar = QProgressBar(self)
         self.progress_bar.setRange(-2, 4)  # Set the range from 0 to 4
         right_layout.addWidget(self.progress_bar)
 
-       # Add labels above the progress bar to simulate ticks
+        # Add labels above the progress bar to simulate ticks
         ticks_layout = QHBoxLayout()
 
-        # Calculate the tick positions dynamically based on the current range of the progress bar
-        range_min, range_max = self.progress_bar.minimum(), self.progress_bar.maximum()
-        for tick_value in range(range_min, range_max + 1):
-            tick_label = QLabel(str(tick_value), self)
-            tick_label.setAlignment(Qt.AlignTop)
+        # Create a label for "Low" on the left side (minimum value of the progress bar)
+        low_tick_label = QLabel("Low", self)
+        low_tick_label.setStyleSheet("font-size: 16px; color: red;")
+        ticks_layout.addWidget(low_tick_label, Qt.AlignLeft)
 
-            # Calculate the position of the tick label relative to the progress bar width
-            tick_position = int((tick_value - range_min) / (range_max - range_min) * self.progress_bar.width())
-            tick_label.move(tick_position - tick_label.width() // 2, 0)
-            ticks_layout.addWidget(tick_label)
+        # Add a larger stretch to push the "High" label to the right end
+        ticks_layout.addItem(QSpacerItem(1000, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
+
+        # Create a label for "High" on the right side (maximum value of the progress bar)
+        high_tick_label = QLabel("High", self)
+        high_tick_label.setStyleSheet("font-size: 16px; color: green;")
+        ticks_layout.addWidget(high_tick_label, Qt.AlignRight)
 
         right_layout.addLayout(ticks_layout)
 
@@ -70,7 +82,7 @@ class FilterAnalysisWindow(QWidget):
         right_layout.addWidget(self.details_label)
 
         # Set right layout in the main layout
-        main_layout.addLayout(right_layout, 1)  # Takes up the other half of the window
+        main_layout.addLayout(right_layout)  # No need to specify a stretch factor
 
         # Set the main layout for the window
         self.setLayout(main_layout)
@@ -79,7 +91,7 @@ class FilterAnalysisWindow(QWidget):
         self.packet_list_widget.itemClicked.connect(self.showDetails)
 
         self.setWindowTitle('Filter and Analysis')
-        self.setGeometry(100, 100, 800, 400)
+        self.setGeometry(100, 100, 1200, 800)
         self.show()
 
     def updateUI(self):
@@ -107,6 +119,7 @@ class FilterAnalysisWindow(QWidget):
 
         # Update the entropy value label
         self.entropy_value_label.setText(f"Entropy: {entropy_level}")
+        self.entropy_value_label.setStyleSheet("font-size: 16px; color: white;")
 
         print(f'Entropy Level: {entropy_level}')
 
