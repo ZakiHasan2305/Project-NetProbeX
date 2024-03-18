@@ -115,14 +115,18 @@ class FilterAnalysisWindow(QWidget):
             item = QListWidgetItem(packet, self.packet_list_widget)
 
     def updateProgressBar(self, entropy_level):
+        # Convert entropy level to float
+        entropy_float = float(entropy_level)
+
         # Update the progress bar with the given entropy level
-        self.progress_bar.setValue(int(entropy_level))
+        self.progress_bar.setValue(int(entropy_float))
 
         # Update the entropy value label
         self.entropy_value_label.setText(f"Entropy: {entropy_level}")
         self.entropy_value_label.setStyleSheet("font-size: 16px; color: white;")
 
         print(f'Entropy Level: {entropy_level}')
+
 
     def showDetails(self, item):
         # Update the details_label with details of the selected packet
