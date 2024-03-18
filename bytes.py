@@ -5,7 +5,8 @@ from random import randint
 import speedtest
 import pyshark
 import sys
-from constants import wireshark_file_path
+from constants import get_wireshark_file_path
+wireshark_file_path = get_wireshark_file_path()
 
 def byte(instance):
     # Path to your pcap/pcapng file
