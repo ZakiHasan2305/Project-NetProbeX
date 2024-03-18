@@ -5,7 +5,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.boxlayout import BoxLayout
 from wiresharkpractise import get_source_ip
-from constants import wireshark_file_path
+from constants import get_wireshark_file_path
+wireshark_file_path = get_wireshark_file_path()
 from packetsandlinks import count_total_websites
 
 

@@ -3,7 +3,8 @@ from PyQt5.QtCore import QSize
 from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
 from scapy.all import rdpcap
 import matplotlib.pyplot as plt
-from constants import wireshark_file_path
+from constants import get_wireshark_file_path
+wireshark_file_path = get_wireshark_file_path()
 
 class MainWindow(QMainWindow): 
     def __init__(self):

@@ -5,10 +5,11 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.uix.button import Button
 from kivy.uix.popup import Popup
-from constants import wireshark_file_path
+from constants import get_wireshark_file_path
+wireshark_file_path = get_wireshark_file_path()
 
-height = 500
-width = 500
+height = 800
+width = 800
 class PacketAnalysisApp(App):
     def build(self):
         root = BoxLayout(orientation='vertical')

@@ -1,5 +1,6 @@
 import pyshark
-from constants import wireshark_file_path
+from constants import get_wireshark_file_path
+wireshark_file_path = get_wireshark_file_path()
 
 def get_source_ip(pcap_file):
     # Open the pcap file

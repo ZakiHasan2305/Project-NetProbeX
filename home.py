@@ -12,7 +12,8 @@ import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QMessageBox, QLabel
 from PySide6.QtCore import QTimer, Qt
 import pyqtgraph as pg
-from constants import wireshark_file_path
+from constants import get_wireshark_file_path
+wireshark_file_path = get_wireshark_file_path()
 from random import randint
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QListWidget, QProgressBar, QLabel, QListWidgetItem
 from PyQt5.QtGui import QPainter, QBrush, QColor
@@ -25,10 +26,10 @@ from kivy.clock import Clock
 
 class Home(App):
     def build(self):
-        root = FloatLayout()
+        root = FloatLayout(size=(800, 800))
 
         # Background Image
-        bg_image = Image(source='image.png', allow_stretch=True, keep_ratio=False, size=(400,400))
+        bg_image = Image(source='image.png', allow_stretch=True, keep_ratio=False, size=(800,800))
         root.add_widget(bg_image)
 
         # Adding close button
@@ -61,7 +62,7 @@ class Home(App):
         content.add_widget(no_button)
 
         # Create Popup
-        popup = Popup(title='Confirmation', content=content, size_hint=(None, None), size=(300, 200))
+        popup = Popup(title='Confirmation', content=content, size_hint=(None, None), size=(450, 300))
         popup.open()
 
         # Bind "No" button to dismiss the popup
@@ -73,19 +74,25 @@ class Home(App):
     def show_sidebar(self, instance):
         # Popup for Sidebar
         content = BoxLayout(orientation='vertical')
-        task1_label = Button(text='Personal Information')
-        task2_label = Button(text='Visual Aid')
-        task3_label = Button(text='WireShark Demo')
-        task4_label = Button(text='Transfer Speed/Packets')
-        task5_label = Button(text='Entropy Calculations')
+        task1_label = Button(text='Basic Information')
+        task2_label = Button(text='Byte Analysis')
+        task3_label = Button(text='Start a Session')
+        task4_label = Button(text='Packet Analysis')
+        task5_label = Button(text='Attack Detetction')
+        task6_label = Button(text='Update File Path')
 
-        task2_label.bind(on_press=self.open_visualaid)  # Binding the function to Task 2
-        task5_label.bind(on_press=self.filter_analysis_win)
         task1_label.bind(on_press=self.personal_infortation)
+        task2_label.bind(on_press=self.open_visualaid)  # Binding the function to Task 2
+        task3_label.bind(on_press=self.open_wireshark)
+        task4_label.bind(on_press=self.performace_analysis)
+        task5_label.bind(on_press=self.filter_analysis_win)
+        task6_label.bind(on_press=self.update_filepath)
 
+
+        content.add_widget(task3_label)
+        content.add_widget(task6_label)
         content.add_widget(task1_label)
         content.add_widget(task2_label)
-        content.add_widget(task3_label)
         content.add_widget(task4_label)
         content.add_widget(task5_label)
 
@@ -109,6 +116,24 @@ class Home(App):
             subprocess.Popen(['python','packetsandlinks.py'])
         except Exception as e:
             print(f"Error occured while launcing packetsandlinks.py: {e}")
+
+    def performace_analysis(self,instance):
+        try:
+            subprocess.Popen(['python','performanceAnalysis.py'])
+        except Exception as e:
+            print(f"Error occured while launcing performanceAnalysis.py: {e}")
+    
+    def open_wireshark(self,instance):
+        try:
+            subprocess.Popen(['python','open_wireshark.py'])
+        except Exception as e:
+            print(f"Error occured while launcing open_wireshark.py: {e}")
+
+    def update_filepath(self,instance):
+        try:
+            subprocess.Popen(['python','update_wireshark_path.py'])
+        except Exception as e:
+            print(f"Error occured while launcing update_wireshark_path.py.py: {e}")
 
 
 if __name__ == "__main__":

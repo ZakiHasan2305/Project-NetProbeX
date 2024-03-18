@@ -6,7 +6,8 @@ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 from scapy.all import rdpcap
 import pyshark
-from constants import wireshark_file_path
+from constants import get_wireshark_file_path
+wireshark_file_path = get_wireshark_file_path()
 
 class BackgroundWidget(QWidget):
     def __init__(self, parent=None):
@@ -136,7 +137,7 @@ class FilterAnalysisWindow(QWidget):
         main_layout.addWidget(self.transfer_speed_graph)  # Takes up the other half of the window
 
         self.setWindowTitle('Filter and Analysis')
-        self.setGeometry(100, 100, 1200, 800)
+        self.setGeometry(100, 100, 1200, 600)
         self.show()
 
     def resizeEvent(self, event):

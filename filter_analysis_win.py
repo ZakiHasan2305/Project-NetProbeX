@@ -2,7 +2,8 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QHBoxLayout, QListWidget, QProgressBar, QLabel, QListWidgetItem, QSpacerItem, QSizePolicy, QFrame, QPushButton
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtCore import Qt
-from constants import wireshark_file_path
+from constants import get_wireshark_file_path
+wireshark_file_path = get_wireshark_file_path()
 from securitycheck import get_packets_and_entropy
 
 class FilterAnalysisWindow(QWidget):
@@ -65,7 +66,7 @@ class FilterAnalysisWindow(QWidget):
         ticks_layout.addWidget(low_tick_label, Qt.AlignLeft)
 
         # Add a larger stretch to push the "High" label to the right end
-        ticks_layout.addItem(QSpacerItem(1000, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
+        ticks_layout.addItem(QSpacerItem(10000, 20, QSizePolicy.Expanding, QSizePolicy.Minimum))
 
         # Create a label for "High" on the right side (maximum value of the progress bar)
         high_tick_label = QLabel("High", self)
@@ -91,7 +92,7 @@ class FilterAnalysisWindow(QWidget):
         self.packet_list_widget.itemClicked.connect(self.showDetails)
 
         self.setWindowTitle('Filter and Analysis')
-        self.setGeometry(100, 100, 1200, 800)
+        self.setGeometry(100, 100, 1200, 600)
         self.show()
 
     def updateUI(self):

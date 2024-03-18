@@ -1,7 +1,8 @@
 from scapy.all import *
 from scapy.layers.inet import IP  # Add this line to import the IP class
 import math
-from constants import wireshark_file_path
+from constants import get_wireshark_file_path
+wireshark_file_path = get_wireshark_file_path()
 
 def calculate_entropy(data):
     if not data:
