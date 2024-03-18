@@ -30,7 +30,7 @@ class SysInfoWindow(App):
             "Computer name": Label(text="Computer name: ...", color=(1, 1, 1, 1)),
             "IP Address": Label(text="IP Address: ...", color=(1, 1, 1, 1)),
             "Protocol": Label(text="Protocol: ...", color=(1, 1, 1, 1)),
-            " Total Websites Visited": Label(text=" Total Websites Visited: ...", color=(1, 1, 1, 1)),
+            "Total Websites Visited": Label(text=" Total Websites Visited: ...", color=(1, 1, 1, 1)),
             "SFTP": Label(text="SFTP: ...", color=(1, 1, 1, 1)),
         }
 
