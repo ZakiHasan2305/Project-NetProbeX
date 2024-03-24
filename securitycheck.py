@@ -1,15 +1,16 @@
 from scapy.all import *
 from scapy.layers.inet import IP  # Add this line to import the IP class
 import math
-from constants import wireshark_file_path
+from constants import get_wireshark_file_path
+wireshark_file_path = get_wireshark_file_path()
 
 def calculate_entropy(data):
     if not data:
         return 0
 
     prob = [float(data.count(c)) / len(data) for c in set(data)]
-    entropy = - sum(p * math.log(p) / math.log(2.0) for p in prob)
-    return entropy
+    entropy = - sum(p * math.log(p) for p in prob)
+    return entropy / 10
 
 def analyze_packet(packet):
     if IP in packet:
@@ -41,11 +42,13 @@ def get_packets_and_entropy(file_path):
             if hasattr(payload, "load"):
                 data = payload.load
                 entropy = calculate_entropy(data)
+                print(entropy)
 
                 # Adjust the condition as needed for your specific case
-                if entropy < 3.0:
+                if entropy != -0.0 and entropy < 1.0 and entropy >= 0.0:
                     analyzed_packets.append(str(packet))
-                    entropy_levels.append(entropy)
+                    entropy_str = "{:.2f}".format(entropy)
+                    entropy_levels.append(entropy_str)
 
     return analyzed_packets, entropy_levels
 
@@ -53,6 +56,8 @@ if __name__ == "__main__":
     pcap_file = wireshark_file_path
     packets, entropy_levels = get_packets_and_entropy(pcap_file)
     # analyze_pcap(pcap_file)
+
+    
 
     # Now you can use 'packets' and 'entropy_levels' in your PyQt frontend
     print("Analyzed Packets:", packets)

@@ -15,7 +15,7 @@ from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from bytes import byte  # Import the byte function from bytes.py
 from speeddocumenting import speed
-height = 500
+height = 800
 
 def confirm_close(instance):
     content = BoxLayout(orientation='vertical')

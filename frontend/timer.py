@@ -210,11 +210,11 @@ class Ui_MainWindow(object):
 
         self.nextScreenButton.clicked.connect(self.nextScreen)
 
-        def nextScreen(self):
-             MainWindow = QtWidgets.QMainWindow()
-             self.ui = Ui_Form()
-             self.ui.setupUi(self.MainWindow)
-             self.MainWindow.show()
+    def nextScreen(self):
+        MainWindow = QtWidgets.QMainWindow()
+        self.ui = Ui_Form()
+        self.ui.setupUi(self.MainWindow)
+        self.MainWindow.show()
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)

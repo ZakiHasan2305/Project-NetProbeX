@@ -1,20 +1,19 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout
-from PyQt5.QtGui import QPixmap, QPainter
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 import matplotlib.pyplot as plt
 from scapy.all import rdpcap
 import pyshark
-from constants import wireshark_file_path
+from constants import get_wireshark_file_path
+wireshark_file_path = get_wireshark_file_path()
 
 class BackgroundWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         self.background_image = QPixmap("background.jpg")  # Load background image
 
-    def paintEvent(self, event):
-        painter = QPainter(self)
-        painter.drawPixmap(self.rect(), self.background_image)
 
 class PacketLossGraph(QWidget):
     def __init__(self, parent=None):
@@ -109,12 +108,25 @@ class FilterAnalysisWindow(QWidget):
         self.initUI()
 
     def initUI(self):
-        # Set background image
-        self.background = BackgroundWidget(self)
 
         # Create main layout
         main_layout = QVBoxLayout(self)
-        main_layout.addWidget(self.background)
+
+        # Load the JPG image
+        background_image = "background-overlay.jpg"
+        self.pixmap = QPixmap(background_image)
+
+        # Create a QLabel to display the background image
+        self.label = QLabel(self)
+        self.label.setPixmap(self.pixmap)
+        self.label.setGeometry(0, 0, self.width(), self.height())
+
+        # Create close button
+        self.close_button = QPushButton("Close", self)
+        self.close_button.setStyleSheet("background-color: #605c5c; color: white; border: none;")
+        self.close_button.setFixedSize(100, 50)  # Set the size of the button to be 80x40 pixels
+        self.close_button.clicked.connect(self.close)
+        main_layout.addWidget(self.close_button, alignment=Qt.AlignTop | Qt.AlignRight)
 
         # Add packet loss graph
         self.packet_loss_graph = PacketLossGraph(self)
@@ -125,8 +137,17 @@ class FilterAnalysisWindow(QWidget):
         main_layout.addWidget(self.transfer_speed_graph)  # Takes up the other half of the window
 
         self.setWindowTitle('Filter and Analysis')
-        self.setGeometry(100, 100, 800, 400)
+        self.setGeometry(100, 100, 1200, 600)
         self.show()
+
+    def resizeEvent(self, event):
+        # Update the background size when the window is resized
+        self.update_background_size()
+
+    def update_background_size(self):
+        # Resize the background image to match the window size
+        self.pixmap = self.pixmap.scaled(self.size())
+        self.label.setGeometry(0, 0, self.width(), self.height())
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
